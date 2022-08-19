@@ -71,7 +71,7 @@ export default {
       infoProducts: [
         {
           image: red, //dùng
-          quantity: 0,
+          quantity: 1,
           textColor: 'Màu Đỏ'
         },
         {
@@ -99,10 +99,11 @@ export default {
   methods: {
     handleChangeColor(index){
         // console.log("index", index);
+        this.cardNumber = 0 // Setup lại giỏ hàng
         this.selectedProduct = index
     },
     handleAddToCart(){
-        if (this.cardNumber + 1 > this.getProduct) {
+        if (this.cardNumber + 1 > this.getProduct.quantity) {
             alert('meo du hang')
         } else {
             this.cardNumber = this.cardNumber + 1
