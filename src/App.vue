@@ -48,6 +48,11 @@
                 
         </div>
     </div>
+
+    <div>
+        <component-header :arrayMail="arrayMail"/>
+    </div>
+    
 </template>
 
 <script>
@@ -55,8 +60,11 @@
 import red from './assets/images/red.jpg'
 import blue from './assets/images/blue.jpg'
 import black from './assets/images/black.jpg'
+import ComponentHeader from './components/ComponentHeader.vue'
+
 
 export default {
+  components: { ComponentHeader },
   name: 'App',
   data() {
     return {
@@ -66,6 +74,14 @@ export default {
       sale: 0.1,
       selectedProduct: 0,
       cardNumber: 0,
+
+      arrayMail: [
+        {mail: 'test1@gmail.com', activeMail: true},
+        {mail: 'test2@gmail.com', activeMail: true},
+        {mail: 'test3@gmail.com', activeMail: false},
+        {mail: 'test4@gmail.com', activeMail: true},  
+        {mail: 'test5@gmail.com', activeMail: false},  
+      ],
 
       infoProducts: [
         {
