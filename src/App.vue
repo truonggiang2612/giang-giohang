@@ -4,7 +4,7 @@
             <p><strong>*</strong> Nếu bạn thấy CÔ ĐƠN, hãy mua hoa về trồng. Nếu bạn thấy GỤC NGÃ, hãy diện lên <strong>chiếc áo này</strong> và tiếp tục đi tiếp!</p>
         </div>
         <div id="app">
-            <div class="cart">Giỏ hàng ({{ cardNumber}})</div>
+            <div class="cart">Giỏ hàng ({{ cardNumber}})</div> <!-- giỏ hàng-->
             <div class="product">
                 <div class="product-image">
                     <div class="image">
@@ -37,7 +37,7 @@
                     </div>
                     <button 
                         @click="handleAddToCart"
-                        class="add-to-cart">Add to cart</button>
+                        class="add-to-cart">Add to cart</button> <!--Add vào giỏ hàng-->
                 </div>
                 
             </div>
@@ -61,7 +61,6 @@ export default {
   data() {
     return {
       title: 'Áo thun nam thể thao hàng VNXK vải dày mịn - Vải Đốm',
-      url: 'https://www.lazada.vn/products/ao-thun-nam-the-thao-hang-vnxk-vai-day-min-vai-dom-i265780948-s382816279.html',
       target: '_blank',
       price: 20000,
       sale: 0.1,
@@ -71,7 +70,7 @@ export default {
       infoProducts: [
         {
           image: red, //dùng
-          quantity: 0,
+          quantity: 1,
           textColor: 'Màu Đỏ'
         },
         {
@@ -99,10 +98,11 @@ export default {
   methods: {
     handleChangeColor(index){
         // console.log("index", index);
+        this.cardNumber = 0 // Setup lại giỏ hàng
         this.selectedProduct = index
     },
     handleAddToCart(){
-        if (this.cardNumber + 1 > this.getProduct) {
+        if (this.cardNumber + 1 > this.getProduct.quantity) {
             alert('meo du hang')
         } else {
             this.cardNumber = this.cardNumber + 1
