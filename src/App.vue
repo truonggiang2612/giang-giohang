@@ -1,12 +1,10 @@
 <template>
    <div class="container">
         <div class="list-blog">
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi sunt eveniet maxime magni in, nostrum
-                facilis, temporibus, quam facere sint est blanditiis harum dicta. Tempore suscipit ut hic. Deleniti,
-                qui.</p>
+            <p><strong>*</strong> Nếu bạn thấy CÔ ĐƠN, hãy mua hoa về trồng. Nếu bạn thấy GỤC NGÃ, hãy diện lên <strong>chiếc áo này</strong> và tiếp tục đi tiếp!</p>
         </div>
         <div id="app">
-            <div class="cart">Giỏ hàng {{ cardNumber}}</div>
+            <div class="cart">Giỏ hàng ({{ cardNumber}})</div>
             <div class="product">
                 <div class="product-image">
                     <div class="image">
@@ -18,8 +16,8 @@
                     <a href="">{{title}}</a>
                     </h3>
                     <p class="brand">Thương hiệu: No brand</p>
-                    <p class="quantity" v-if="getProduct.quantity > 0">Còn lại: {{ getProduct.quantity}} Sản phẩm</p>
-                    <p class="quantity" v-if="getProduct.quantity <= 0">Sản phẩm đã hết hàng</p>
+                    <p class="quantity" v-if="getProduct.quantity > 0">Còn lại: {{ getProduct.quantity}} Sản phẩm</p> <!--điều kiện hiển thị-->
+                    <p class="quantity" v-if="getProduct.quantity <= 0"><strong style="color:red">SẢN PHẨM ĐÃ HẾT HÀNG!</strong></p> <!--điều kiện hiển thị-->
 
                     <div class="wrapper-price">
                         <div class="final-price">{{ formatPriceSale }}</div>        <!--hàm format dưới computed-->
@@ -31,26 +29,21 @@
                         <div class="list-color">
                             <p class="color-text">{{getProduct.textColor}}</p>
                             <ul>
-                                <li v-for="(item, index) in infoProducts" :key="index">
+                                <li v-for="(item, index) in infoProducts" :key="index" @click="handleChangeColor(index)" :class="{ active: selectedProduct == index}"> <!--bind class-->
                                   <img v-bind:src="item.image" v-bind:alt="item.textColor"/> <!---hiển thị hình ảnh-->
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <button 
-                        v-on:click="handleAddToCart"
+                        @click="handleAddToCart"
                         class="add-to-cart">Add to cart</button>
                 </div>
                 
             </div>
-            <div class="description">
-                <ul class="extra-info">
-                    <li>Thoát mồ hôi tốt</li>
-                    <li>Áo thun cổ tròn thể thao Hiye chuyên được may từ chất liệu nilon thoáng mát</li>
-                    <li>Kết hợp thêm sợi thun tạo độ co giãn giúp người tiêu dùng thoải mái khi mặc</li>
-                    <li>Chất liệu: polyester và thun</li>
-                </ul>
-                <h2>Chất liệu bền chặt&nbsp;</h2>
+            <!--Render ra html - description-->
+            <div class="description" v-for="(des, index) in listDesc" :key="index">
+                <li>{{des}}</li>
             </div>
                 
         </div>
@@ -73,23 +66,23 @@ export default {
       price: 20000,
       sale: 0.1,
       selectedProduct: 0,
-      cardNumber: 1,
+      cardNumber: 0,
 
       infoProducts: [
         {
           image: red, //dùng
           quantity: 0,
-          textColor: 'Mau Do'
+          textColor: 'Màu Đỏ'
         },
         {
           image: blue,
           quantity: 5,
-          textColor: 'Mau Xanh'
+          textColor: 'Màu Xanh'
         },
         {
           image: black,
-          quantity: 0,
-          textColor: 'Mau Den'
+          quantity: 2,
+          textColor: 'Màu Đen'
         }
       ],
 
@@ -103,20 +96,34 @@ export default {
     }
   },
 
+  methods: {
+    handleChangeColor(index){
+        // console.log("index", index);
+        this.selectedProduct = index
+    },
+    handleAddToCart(){
+        if (this.cardNumber + 1 > this.getProduct) {
+            alert('meo du hang')
+        } else {
+            this.cardNumber = this.cardNumber + 1
+        }
+    }
+  },
+
   computed: {
-    //Giá gốc
+    // Giá gốc
     formatPriceOriginal() {
       var number = this.price
-      return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(number); //Hàm format giá tiền
+      return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(number); // Hàm format giá tiền
     },
 
-    //Giá sale
+    // Giá sale
     formatPriceSale() {
       var number  = this.price - this.sale * this.price // giá hiện tại - sale * giá hiện tại
-      return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(number); //Hàm format giá tiền
+      return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(number); // Hàm format giá tiền
     },
 
-    //select hình ảnh theo selectedProduct
+    // Select hình ảnh theo selectedProduct
     getProduct() {
       var index = this.selectedProduct
       return this.infoProducts[index]
@@ -134,6 +141,14 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 30px;
+}
+.list-blog {
+    font-size: 22px;
+}
+.cart {
+    border-radius: 5px;
+    background-color: #ffb916;
+    font-weight: 700;
 }
 img {
     max-width: 100%;
@@ -222,6 +237,7 @@ img {
 .list-color ul li:hover,
 .list-color ul li.active {
     border-color: #f57224;
+    cursor: pointer;
 }
 
 .description {
@@ -241,6 +257,7 @@ img {
     text-transform: uppercase;
     font-size: 16px;
     cursor: pointer;
+    border-radius: 5px;
 }
 
 
